@@ -1,0 +1,1424 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>KTL Lost & Found</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f0f9ff;
+      color: #12304a;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+      background: linear-gradient(135deg, #075985, #0284c7, #38bdf8);
+      color: white;
+      padding: 25px 20px;
+      box-shadow: 0 4px 15px rgba(0, 100, 160, 0.2);
+    }
+
+    .header-content {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .ktl-logo {
+      width: 75px;
+      height: 75px;
+      background: white;
+      color: #075985;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    }
+
+    .header-text h1 {
+      font-size: 30px;
+      margin-bottom: 6px;
+    }
+
+    .header-text p {
+      color: #e0f2fe;
+    }
+
+    /* =========================
+       NAVIGATION
+    ========================= */
+
+    nav {
+      background: white;
+      padding: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    nav button {
+      border: none;
+      background: #e0f2fe;
+      color: #075985;
+      padding: 12px 25px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    nav button:hover {
+      background: #bae6fd;
+    }
+
+    nav button.active {
+      background: #0284c7;
+      color: white;
+    }
+
+    /* =========================
+       LAYOUT
+    ========================= */
+
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .top-section {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 25px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 5px 20px rgba(0, 80, 130, 0.08);
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      margin-bottom: 18px;
+      color: #075985;
+    }
+
+    /* =========================
+       BUTTON
+    ========================= */
+
+    .create-button {
+      width: 100%;
+      background: #0284c7;
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      transition: 0.2s;
+    }
+
+    .create-button:hover {
+      background: #0369a1;
+      transform: translateY(-1px);
+    }
+
+    /* =========================
+       SEARCH
+    ========================= */
+
+    .search {
+      margin-bottom: 20px;
+    }
+
+    .search input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #bae6fd;
+      border-radius: 12px;
+      background: white;
+      font-size: 15px;
+    }
+
+    .search input:focus {
+      outline: none;
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2,132,199,0.1);
+    }
+
+    /* =========================
+       POSTS
+    ========================= */
+
+    .post {
+      border: 1px solid #dbeafe;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 15px;
+      background: #ffffff;
+      transition: 0.2s;
+    }
+
+    .post:hover {
+      border-color: #7dd3fc;
+      box-shadow: 0 4px 15px rgba(14,165,233,0.08);
+    }
+
+    .post:last-child {
+      margin-bottom: 0;
+    }
+
+    .post-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .post-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #0c4a6e;
+    }
+
+    .badge {
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .lost {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .found {
+      background: #cffafe;
+      color: #0e7490;
+    }
+
+    .description {
+      color: #475569;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .post-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: #64748b;
+      font-size: 14px;
+      margin-top: 12px;
+    }
+
+    .post-author {
+      color: #0284c7;
+      font-weight: bold;
+    }
+
+    .delete-button {
+      margin-top: 15px;
+      border: none;
+      background: #eff6ff;
+      color: #2563eb;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .delete-button:hover {
+      background: #dbeafe;
+    }
+
+    /* =========================
+       STATISTICS
+    ========================= */
+
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #e0f2fe;
+    }
+
+    .stat-item:last-child {
+      border-bottom: none;
+    }
+
+    .number {
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+
+    /* =========================
+       EMPTY
+    ========================= */
+
+    .empty {
+      text-align: center;
+      padding: 40px;
+      color: #94a3b8;
+    }
+
+    /* =========================
+       MODAL
+    ========================= */
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(7, 89, 133, 0.45);
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      padding: 20px;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      width: 100%;
+      max-width: 550px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 18px;
+      padding: 25px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-header h2 {
+      color: #075985;
+    }
+
+    .close {
+      border: none;
+      background: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #64748b;
+    }
+
+    /* =========================
+       FORM
+    ========================= */
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: bold;
+      color: #164e63;
+    }
+
+    .required {
+      color: #0284c7;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #bae6fd;
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: inherit;
+      background: white;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2,132,199,0.1);
+    }
+
+    .submit-button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #0284c7;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .submit-button:hover {
+      background: #0369a1;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .footer-ktl {
+      color: #0284c7;
+      font-weight: bold;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 800px) {
+
+      .top-section {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        order: 2;
+      }
+
+      .header-content {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 500px) {
+
+      nav {
+        flex-direction: column;
+      }
+
+      nav button {
+        width: 100%;
+      }
+
+      .post-header {
+        flex-direction: column;
+      }
+
+      .header-text h1 {
+        font-size: 25px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+  <div class="header-content">
+
+    <div class="ktl-logo">
+      KTL
+    </div>
+
+    <div class="header-text">
+      <h1>KTL Lost & Found</h1>
+      <p>Helping lost items find their owners</p>
+    </div>
+
+  </div>
+
+</header>
+
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav>
+
+  <button
+    id="lostTab"
+    class="active"
+    onclick="changeTab('lost')"
+  >
+    🔵 Lost Items
+  </button>
+
+  <button
+    id="foundTab"
+    onclick="changeTab('found')"
+  >
+    🔷 Found Items
+  </button>
+
+</nav>
+
+
+<div class="container">
+
+  <div class="top-section">
+
+    <!-- =====================
+         MAIN CONTENT
+    ====================== -->
+
+    <main>
+
+      <button
+        class="create-button"
+        onclick="openModal()"
+      >
+        ＋ Create a Post
+      </button>
+
+
+      <div class="search">
+
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="🔎 Search for an item..."
+          oninput="renderPosts()"
+        >
+
+      </div>
+
+
+      <div class="card">
+
+        <h2 id="sectionTitle">
+          Lost Items
+        </h2>
+
+        <div id="postsContainer"></div>
+
+      </div>
+
+    </main>
+
+
+    <!-- =====================
+         SIDEBAR
+    ====================== -->
+
+    <aside class="sidebar">
+
+      <div class="card">
+
+        <h2>
+          🏆 Frequent Losers
+        </h2>
+
+        <div id="usersStats"></div>
+
+      </div>
+
+
+      <div class="card">
+
+        <h2>
+          📦 Frequently Lost
+        </h2>
+
+        <div id="itemsStats"></div>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     MODAL
+========================= -->
+
+<div
+  class="modal"
+  id="modal"
+>
+
+  <div class="modal-content">
+
+    <div class="modal-header">
+
+      <h2>
+        Create a Post
+      </h2>
+
+      <button
+        class="close"
+        onclick="closeModal()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="postForm">
+
+      <div class="form-group">
+
+        <label>
+          Post Type <span class="required">*</span>
+        </label>
+
+        <select id="type" required>
+
+          <option value="lost">
+            I lost an item
+          </option>
+
+          <option value="found">
+            I found an item
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Item Name <span class="required">*</span>
+        </label>
+
+        <input
+          type="text"
+          id="title"
+          placeholder="Example: Black wallet"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Item Description <span class="required">*</span>
+        </label>
+
+        <textarea
+          id="description"
+          placeholder="Describe the item in detail: color, size, brand, special marks, contents, etc."
+          required
+        ></textarea>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Location
+        </label>
+
+        <input
+          type="text"
+          id="location"
+          placeholder="Example: Room 205"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Your Name <span class="required">*</span>
+        </label>
+
+        <input
+          type="text"
+          id="author"
+          placeholder="Example: Arman"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Class
+        </label>
+
+        <input
+          type="text"
+          id="className"
+          placeholder="Example: 10A"
+        >
+
+      </div>
+
+
+      <button
+        class="submit-button"
+        type="submit"
+      >
+        Publish Post
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+  <span class="footer-ktl">KTL</span>
+  Lost & Found · School Community
+
+</footer>
+
+
+<script>
+
+  // =========================
+  // DATA
+  // =========================
+
+  let posts =
+    JSON.parse(
+      localStorage.getItem("ktlLostFound")
+    ) || [
+
+      {
+        id: 1,
+        type: "lost",
+        title: "Black Sports Jacket",
+        description:
+          "Black Nike jacket, size M. There is a small white logo on the left sleeve.",
+        location: "Gym",
+        author: "Daniyar",
+        className: "10A",
+        date: "09/08/2026"
+      },
+
+      {
+        id: 2,
+        type: "lost",
+        title: "Blue Water Bottle",
+        description:
+          "Blue metal water bottle with a mountain sticker on it.",
+        location: "Cafeteria",
+        author: "Alina",
+        className: "9B",
+        date: "09/07/2026"
+      },
+
+      {
+        id: 3,
+        type: "found",
+        title: "Gray Pencil Case",
+        description:
+          "Gray pencil case with three compartments. Contains several pens and pencils.",
+        location: "Room 204",
+        author: "Marat",
+        className: "11A",
+        date: "09/08/2026"
+      }
+
+    ];
+
+
+  let currentTab = "lost";
+
+
+  // =========================
+  // SAVE DATA
+  // =========================
+
+  function savePosts() {
+
+    localStorage.setItem(
+      "ktlLostFound",
+      JSON.stringify(posts)
+    );
+
+  }
+
+
+  // =========================
+  // CHANGE TAB
+  // =========================
+
+  function changeTab(type) {
+
+    currentTab = type;
+
+    document
+      .getElementById("lostTab")
+      .classList.toggle(
+        "active",
+        type === "lost"
+      );
+
+    document
+      .getElementById("foundTab")
+      .classList.toggle(
+        "active",
+        type === "found"
+      );
+
+    document.getElementById(
+      "sectionTitle"
+    ).textContent =
+      type === "lost"
+        ? "Lost Items"
+        : "Found Items";
+
+    renderPosts();
+
+  }
+
+
+  // =========================
+  // RENDER POSTS
+  // =========================
+
+  function renderPosts() {
+
+    const container =
+      document.getElementById(
+        "postsContainer"
+      );
+
+    const search =
+      document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+
+    const filteredPosts =
+      posts.filter(post => {
+
+        const matchesTab =
+          post.type === currentTab;
+
+        const matchesSearch =
+          post.title
+            .toLowerCase()
+            .includes(search) ||
+
+          post.description
+            .toLowerCase()
+            .includes(search) ||
+
+          post.author
+            .toLowerCase()
+            .includes(search);
+
+        return (
+          matchesTab &&
+          matchesSearch
+        );
+
+      });
+
+
+    if (
+      filteredPosts.length === 0
+    ) {
+
+      container.innerHTML = `
+
+        <div class="empty">
+
+          <div style="font-size:40px;">
+            🔍
+          </div>
+
+          <p>
+            No posts found.
+          </p>
+
+        </div>
+
+      `;
+
+      return;
+    }
+
+
+    container.innerHTML =
+      filteredPosts
+        .sort(
+          (a, b) =>
+            b.id - a.id
+        )
+        .map(post => `
+
+          <article class="post">
+
+            <div class="post-header">
+
+              <div class="post-title">
+                ${escapeHTML(
+                  post.title
+                )}
+              </div>
+
+              <span
+                class="badge ${post.type}"
+              >
+                ${
+                  post.type === "lost"
+                    ? "LOST"
+                    : "FOUND"
+                }
+              </span>
+
+            </div>
+
+
+            <div class="description">
+
+              <strong>
+                Description:
+              </strong>
+
+              ${escapeHTML(
+                post.description
+              )}
+
+            </div>
+
+
+            <div class="post-info">
+
+              <span>
+                📍
+                ${
+                  escapeHTML(
+                    post.location ||
+                    "Location not specified"
+                  )
+                }
+              </span>
+
+              <span>
+                📅
+                ${escapeHTML(post.date)}
+              </span>
+
+              <span>
+
+                👤
+
+                <span class="post-author">
+                  ${escapeHTML(
+                    post.author
+                  )}
+                </span>
+
+                ${
+                  post.className
+                    ? " · " +
+                      escapeHTML(
+                        post.className
+                      )
+                    : ""
+                }
+
+              </span>
+
+            </div>
+
+
+            <button
+              class="delete-button"
+              onclick="deletePost(${post.id})"
+            >
+              Delete
+            </button>
+
+          </article>
+
+        `)
+        .join("");
+
+  }
+
+
+  // =========================
+  // CREATE POST
+  // =========================
+
+  document
+    .getElementById("postForm")
+    .addEventListener(
+      "submit",
+      function(event) {
+
+        event.preventDefault();
+
+
+        const type =
+          document.getElementById(
+            "type"
+          ).value;
+
+        const title =
+          document.getElementById(
+            "title"
+          ).value.trim();
+
+        const description =
+          document.getElementById(
+            "description"
+          ).value.trim();
+
+        const location =
+          document.getElementById(
+            "location"
+          ).value.trim();
+
+        const author =
+          document.getElementById(
+            "author"
+          ).value.trim();
+
+        const className =
+          document.getElementById(
+            "className"
+          ).value.trim();
+
+
+        if (
+          !title ||
+          !description ||
+          !author
+        ) {
+
+          alert(
+            "Please fill in all required fields."
+          );
+
+          return;
+
+        }
+
+
+        if (
+          description.length < 10
+        ) {
+
+          alert(
+            "Please provide a more detailed description of the item."
+          );
+
+          return;
+
+        }
+
+
+        const newPost = {
+
+          id: Date.now(),
+
+          type,
+
+          title,
+
+          description,
+
+          location,
+
+          author,
+
+          className,
+
+          date:
+            new Date()
+              .toLocaleDateString(
+                "en-US"
+              )
+
+        };
+
+
+        posts.push(newPost);
+
+        savePosts();
+
+        closeModal();
+
+        document
+          .getElementById(
+            "postForm"
+          )
+          .reset();
+
+        changeTab(type);
+
+        updateStatistics();
+
+        alert(
+          "Your post has been published! 🎉"
+        );
+
+      }
+    );
+
+
+  // =========================
+  // DELETE POST
+  // =========================
+
+  function deletePost(id) {
+
+    const confirmed =
+      confirm(
+        "Are you sure you want to delete this post?"
+      );
+
+    if (!confirmed) return;
+
+
+    posts =
+      posts.filter(
+        post => post.id !== id
+      );
+
+    savePosts();
+
+    renderPosts();
+
+    updateStatistics();
+
+  }
+
+
+  // =========================
+  // USER STATISTICS
+  // =========================
+
+  function updateUserStatistics() {
+
+    const users = {};
+
+
+    posts
+      .filter(
+        post =>
+          post.type === "lost"
+      )
+      .forEach(post => {
+
+        users[post.author] =
+          (users[post.author] || 0) + 1;
+
+      });
+
+
+    const sortedUsers =
+      Object.entries(users)
+        .sort(
+          (a, b) =>
+            b[1] - a[1]
+        )
+        .slice(0, 5);
+
+
+    const container =
+      document.getElementById(
+        "usersStats"
+      );
+
+
+    if (
+      sortedUsers.length === 0
+    ) {
+
+      container.innerHTML =
+        "<p style='color:#94a3b8;'>No data yet.</p>";
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      sortedUsers
+        .map(
+          ([name, count], index) => `
+
+            <div class="stat-item">
+
+              <span>
+
+                ${
+                  index === 0
+                    ? "🥇"
+                    : index === 1
+                    ? "🥈"
+                    : index === 2
+                    ? "🥉"
+                    : "👤"
+                }
+
+                ${escapeHTML(name)}
+
+              </span>
+
+              <span class="number">
+                ${count}
+              </span>
+
+            </div>
+
+          `
+        )
+        .join("");
+
+  }
+
+
+  // =========================
+  // ITEM STATISTICS
+  // =========================
+
+  function updateItemStatistics() {
+
+    const items = {};
+
+
+    posts
+      .filter(
+        post =>
+          post.type === "lost"
+      )
+      .forEach(post => {
+
+        const name =
+          post.title.toLowerCase();
+
+        items[name] =
+          (items[name] || 0) + 1;
+
+      });
+
+
+    const sortedItems =
+      Object.entries(items)
+        .sort(
+          (a, b) =>
+            b[1] - a[1]
+        )
+        .slice(0, 7);
+
+
+    const container =
+      document.getElementById(
+        "itemsStats"
+      );
+
+
+    if (
+      sortedItems.length === 0
+    ) {
+
+      container.innerHTML =
+        "<p style='color:#94a3b8;'>No data yet.</p>";
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      sortedItems
+        .map(
+          ([item, count]) => `
+
+            <div class="stat-item">
+
+              <span>
+                📦
+                ${escapeHTML(item)}
+              </span>
+
+              <span class="number">
+                ${count}
+              </span>
+
+            </div>
+
+          `
+        )
+        .join("");
+
+  }
+
+
+  function updateStatistics() {
+
+    updateUserStatistics();
+
+    updateItemStatistics();
+
+  }
+
+
+  // =========================
+  // MODAL
+  // =========================
+
+  function openModal() {
+
+    document
+      .getElementById("modal")
+      .classList.add("show");
+
+    document.getElementById(
+      "type"
+    ).value = currentTab;
+
+  }
+
+
+  function closeModal() {
+
+    document
+      .getElementById("modal")
+      .classList.remove("show");
+
+  }
+
+
+  window.addEventListener(
+    "click",
+    function(event) {
+
+      const modal =
+        document.getElementById(
+          "modal"
+        );
+
+      if (
+        event.target === modal
+      ) {
+
+        closeModal();
+
+      }
+
+    }
+  );
+
+
+  // =========================
+  // HTML SECURITY
+  // =========================
+
+  function escapeHTML(text) {
+
+    return String(text)
+      .replace(
+        /&/g,
+        "&amp;"
+      )
+      .replace(
+        /</g,
+        "&lt;"
+      )
+      .replace(
+        />/g,
+        "&gt;"
+      )
+      .replace(
+        /"/g,
+        "&quot;"
+      )
+      .replace(
+        /'/g,
+        "&#039;"
+      );
+
+  }
+
+
+  // =========================
+  // START
+  // =========================
+
+  renderPosts();
+
+  updateStatistics();
+
+</script>
+
+</body>
+</html>
+```
